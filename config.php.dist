@@ -10,6 +10,7 @@ class Config
             'MYSQL_PASSWORD' => 'xxx',
         ],
         'logFilePath' => 'log/log.log', // you must create this folder and file
+        'graphsPath' => 'graphs/', // you must create this folder with good permission for write grahs in this // for dev chmod 777 ?
         'plantumlBaseUrl' => 'http://www.plantuml.com/plantuml/',
         // 'plantumlBaseUrl' => 'http://localhost:8085/',
         'envToColor' => [ // must be html encode color

@@ -3,12 +3,12 @@
 require __DIR__.'/vendor/autoload.php';
 // require 'src/sql.structure.php';
 require 'config.php';
-require 'src/TreeQl2Plantuml.class.php';
 
 use Monolog\Logger;
 use Monolog\Handler\StreamHandler;
 use Monolog\Formatter\LineFormatter;
 use Cocur\Slugify\Slugify;
+use v20100t\PlantumlGraph\Tools;
 
 //https://github.com/Seldaek/monolog/blob/master/doc/01-usage.md
 /*
@@ -51,73 +51,73 @@ $debugHandler->setFormatter($formatter);
 $log->pushHandler($debugHandler);
 
 try {
-    $sqlStrcuture = new App\sqlStructure(
-        $config['sql']['MYSQL_SERVER'],
-        $config['sql']['MYSQL_DATABASE_NAME'],
-        $config['sql']['MYSQL_USERNAME'],
-        $config['sql']['MYSQL_PASSWORD']
-    );
-    $sql = $sqlStrcuture->getStrcuture();
-    $tables = $sqlStrcuture->getTables();
-    // $log->info('sql  => ', $sql);
-    // Load classes
-    $graph = new v20100t\PlantumlGraph\Builder($config['graphHeader'], $config['graphSkinParam'], $config['graphFooter']);
-    $plantUml = new TreeQl2Plantuml($config, $log);
+    $sqlStrcuture = new App\sqlStructure($config);
+    // $sql = $sqlStrcuture->getStrcuture();
+    // $tables = $sqlStrcuture->getTables();
+    // // $log->info('sql  => ', $sql);
+    // // Load classes
+    // $graph = new v20100t\PlantumlGraph\Builder($config['graphHeader'], $config['graphSkinParam'], $config['graphFooter']);
 
-    //Headers
-    $graph->setHeader();
-    $graph->addTitle($config['graphTitle']);
+    // //Headers
+    // $graph->setHeader();
+    // $graph->addTitle($config['graphTitle']);
 
-    if (!$sql) {
-        die('SQL NULL ');
-    }
+    // if (!$sql) {
+    //     die('SQL NULL ');
+    // }
 
-    $flows = [];
-    //build
-    foreach ($sql as $tableName => $col) {
-        echo "<h1>$tableName</h1>";
-        $txt = '';
-        //@TODO build link with detecting of MUL and tableName in field
+    // $flows = [];
+    // //build
+    // foreach ($sql as $tableName => $col) {
+    //     echo "<h1>$tableName</h1>";
+    //     $txt = '';
+    //     //@TODO build link with detecting of MUL and tableName in field
 
-        foreach ($col as $colName => $c) {
-            //TODO use https://useiconic.com/open/
-            // detect primary key, foreign key and autocrement and canbeNull
-            // <&key> <&calculator>
-            $txt .= '<b>'.$colName.'</b> '.implode(', ', $c).' \n';
-            $graph->addMacro('FA_DATABASE', $slugify->slugify($tableName, '_'), $tableName.' \n '.$txt);
+    //     foreach ($col as $colName => $c) {
+    //         //TODO use https://useiconic.com/open/
+    //         // detect primary key, foreign key and autocrement and canbeNull
+    //         // <&key> <&calculator>
+    //         $txt .= '<b>'.$colName.'</b> '.implode(', ', $c).' \n';
+    //         $graph->addMacro('FA_DATABASE', $slugify->slugify($tableName, '_'), $tableName.' \n '.$txt);
 
-            //build flow
-            if ($c['primary'] == 'MUL') {
-                $log->info('link ?');
-                $slugFrom = '';
-                foreach ($tables as $t) {
-                    if (stristr($colName, $t) || stristr($t, $colName)) {
-                        $log->info("link YESSS  $t => $colName ");
-                        $slugFrom = $slugify->slugify($t, '_');
-                        $flows[] = [
-                            $slugify->slugify($tableName, '_'),
-                             $slugify->slugify($t, '_'),
-                             "$tableName.$colName::$t.id",
-                            ];
-                    }
-                }
-            }
-        }
-    }
+    //         //build flow
+    //         if ($c['primary'] == 'MUL') {
+    //             $log->info('link ?');
+    //             $slugFrom = '';
+    //             foreach ($tables as $t) {
+    //                 if (stristr($colName, $t) || stristr($t, $colName)) {
+    //                     $log->info("link YESSS  $t => $colName ");
+    //                     $slugFrom = $slugify->slugify($t, '_');
+    //                     $flows[] = [
+    //                         $slugify->slugify($tableName, '_'),
+    //                          $slugify->slugify($t, '_'),
+    //                          "$tableName.$colName::$t.id",
+    //                         ];
+    //                 }
+    //             }
+    //         }
+    //     }
+    // }
 
-    // add flows after all items
-    foreach ($flows as $f) {
-        $graph->addFlow($f[0], $f[1], $f[2], '-->');
-    }
+    // // add flows after all items
+    // foreach ($flows as $f) {
+    //     $graph->addFlow($f[0], $f[1], $f[2], '-->');
+    // }
 
-    $graph->build();
-    $graph->encode();
-    $urls = $plantUml->getUrls($graph->encoded); //build final
+    // $graph->build();
+    // $graph->encode();
+
+    $graph = $sqlStrcuture->modelingGraph();
+    $urls = Tools::getUrls($config['plantumlBaseUrl'], $graph->encoded); //build final
     $log->info('Url debug : '.($urls['debug']));
     echo '<a href="'.$urls['debug'].'">url debug </a>';
     echo '<hr>';
-    $svg = $plantUml->getSvg($urls['svg']);
-    // $plantUml->saveInFile($svg, 'lastGraph.svg');
+    $svg = Tools::getCurlDatas($urls['svg']);
+    $graphName = date('Y.m.d..H.i') . '.plantumlGraph - ' . $config['sql']['MYSQL_DATABASE_NAME'];
+    $graphPath = $config['graphsPath'].$graphName;
+    Tools::saveInFile($graphPath, $svg, 'svg');
+    Tools::saveInFile($graphPath, Tools::getCurlDatas($urls['png']), 'png');
+    // Tools::saveInFile($graphPath, Tools::getCurlDatas($urls['txt']), 'txt');
 
     echo $svg;
 
