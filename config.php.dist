@@ -1,0 +1,80 @@
+<?php
+
+class Config
+{
+    public static $config = [
+        'sql' => [
+            'MYSQL_SERVER' => 'localhost',
+            'MYSQL_DATABASE_NAME' => 'flux',
+            'MYSQL_USERNAME' => 'xxxx',
+            'MYSQL_PASSWORD' => 'xxx',
+        ],
+        'logFilePath' => 'log/log.log', // you must create this folder and file
+        'plantumlBaseUrl' => 'http://www.plantuml.com/plantuml/',
+        // 'plantumlBaseUrl' => 'http://localhost:8085/',
+        'envToColor' => [ // must be html encode color
+            'prod' => '#a23d32',
+            'preprod' => '#f39c12',
+            'dev' => '#00bc8c',
+            'test' => '#0b8667',
+        ],
+        //http://plantuml.com/fr/commons
+        'graphTitle' => 'Netflow Architecture',
+        'graphFooter' => 'Generated with NetFlow',
+        'graphHeader' => "<font color=red> <&warning> Warning: <&warning></font> \n * Servers have to <b>redirect to HTTPS</b> \n * Servers have to <b>redirect IP to hostname</b>  \n * Servers have to <b>redirect to login page or homepage </b> \n <font color=red>Please report error to your network [[mailto:admin@company.com?subject=NetFlow-Error-Report&cc=admin.netflow@bcompany.com&bcc=admin.netflow@bcompany.com&body=Please-fix-this-flow  administrator]].</font>",
+        'graphLegend' => 'Légende config du graph',
+        //http://plantuml.com/fr/skinparam
+        'graphSkinParam' => "\n
+                skinparam titleBorderRoundCorner 15
+                skinparam titleBorderThickness 2
+                skinparam titleBorderColor #de2768
+                skinparam titleBackgroundColor #15bacf
+
+                skinparam database{
+                    FontColor          white
+                    AttributeFontColor white
+                    FontSize           17
+                    AttributeFontSize  15
+                    AttributeFontname  Droid Sans Mono
+                    BackgroundColor    #949ba2
+                    BorderColor        black
+                    ArrowColor         #222266
+                }
+
+                skinparam component{
+                    FontColor          white
+                    AttributeFontColor white
+                    FontSize           17
+                    AttributeFontSize  15
+                    AttributeFontname  Droid Sans Mono
+                    BackgroundColor    #949ba2
+                    BorderColor        black
+                    ArrowColor         #222266
+                    LinkColor           #222266
+                }
+
+                skinparam package{
+                    FontColor          white
+                    AttributeFontColor white
+                    FontSize           17
+                    AttributeFontSize  15
+                    AttributeFontname  Droid Sans Mono
+                    BackgroundColor    #3c8dbc
+                    BorderColor        black
+                    ArrowColor         #222266
+                }
+                
+                
+                skinparam node{
+                    FontColor          #15bacf
+                    AttributeFontColor #15bacf
+                    FontSize           17
+                    AttributeFontSize  15
+                    AttributeFontname  Droid Sans Mono
+                    BackgroundColor    #efefef
+                    BorderColor        black
+                    ArrowColor         #222266
+                } 
+        \n",
+    ];
+}

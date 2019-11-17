@@ -1,0 +1,25 @@
+{
+    "autoload": {
+        "psr-4": {"App\\": "src/"}
+    },
+    "repositories": [
+        {
+            "type": "package",
+            "package": {
+                "name": "plantuml-icon-font-sprites", 
+                "version": "1.0",
+                "source": {
+                    "url": "https://github.com/tupadr3/plantuml-icon-font-sprites.git",
+                    "type": "git",
+                    "reference": "master" 
+                }
+            }
+        }],
+    "require": {
+        "monolog/monolog": "^2.0",
+        "guzzlehttp/guzzle": "^6.3",
+        "cocur/slugify": "^3.2",
+        "plantuml-icon-font-sprites": "1.0",
+        "v20100t/plantuml-graph": "dev-master"
+    }
+}
