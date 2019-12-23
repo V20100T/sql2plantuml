@@ -3,6 +3,11 @@
 class Config
 {
     public static $config = [
+        'proxy' => [ // else empty array []
+            'http'  => 'http://proxy.domain.fr:3128', // Use this proxy with "http"
+            'https' => 'http://proxy2.domain.fr:3128', // Use this proxy with "https",
+            'no' => ['.domain.fr', 'localhost']    // Don't use a proxy with these
+        ],
         'sql' => [
             'MYSQL_SERVER' => 'localhost',
             'MYSQL_DATABASE_NAME' => 'flux',
@@ -13,6 +18,7 @@ class Config
         'graphsPath' => 'graphs/', // you must create this folder with good permission for write grahs in this // for dev chmod 777 ?
         'plantumlBaseUrl' => 'http://www.plantuml.com/plantuml/',
         // 'plantumlBaseUrl' => 'http://localhost:8085/',
+        'graphIconsBaseUrl' => 'https://raw.githubusercontent.com/tupadr3/plantuml-icon-font-sprites/v2.1.0',// clone it to keep all in localhost.
         'envToColor' => [ // must be html encode color
             'prod' => '#a23d32',
             'preprod' => '#f39c12',

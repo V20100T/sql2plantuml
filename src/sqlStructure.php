@@ -103,7 +103,7 @@ class sqlStructure
     $tables = $this->getTables();
     // $log->info('sql  => ', $sql);
     // Load classes
-    $graph = new \v20100t\PlantumlGraph\Builder($config['graphHeader'], $config['graphSkinParam'], $config['graphFooter']);
+    $graph = new \v20100t\PlantumlGraph\Builder($config['graphHeader'], $config['graphSkinParam'], $config['graphFooter'], $config['graphIconsBaseUrl']);
 
     //Headers
     $graph->setHeader();

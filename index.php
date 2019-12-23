@@ -31,7 +31,7 @@ use v20100t\PlantumlGraph\Tools;
 $logLevel = Logger::ERROR;
 //dev
 $logLevel = Logger::DEBUG;
-$logLevel = Logger::INFO;
+//$logLevel = Logger::INFO;
 
 //load config
 $config = Config::$config;
